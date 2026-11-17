@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="mr"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FreshMart Image Downloader</title>
+<style>
+body{font-family:system-ui,sans-serif;max-width:720px;margin:2rem auto;padding:0 1rem;color:#222}
+input{width:100%;padding:.6rem;font-size:1rem;box-sizing:border-box;margin:.4rem 0}
+button{padding:.7rem 1.2rem;font-size:1rem;background:#2f7a1f;color:#fff;border:0;border-radius:6px;cursor:pointer}
+button:disabled{opacity:.5}
+progress{width:100%;height:14px;margin:1rem 0}
+#log{background:#f4f4f4;padding:.6rem;height:260px;overflow:auto;font:12px/1.5 monospace;white-space:pre-wrap;border-radius:6px}
+</style></head><body>
+<h2>FreshMart – Real Images Downloader</h2>
+<ol>
+<li><b>pexels.com/api</b> var free API key ghya.</li>
+<li>Khali key paste kara ani <b>Start</b> dabha.</li>
+<li>Download zhalela <b>freshmart-images.zip</b> extract kara ani tyatla <code>assets</code> folder tumchya project chya <code>assets</code> madhe merge kara.</li>
+</ol>
+<input id="key" type="password" placeholder="Pexels API key">
+<button id="go">Start</button>
+<progress id="bar" value="0" max="1"></progress>
+<div id="log"></div>
+<p style="font-size:12px;color:#666">Photos: Pexels (free licence, credit appreciated). Key fakt tumchya browser madhun Pexels la jate.</p>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script>
+const ITEMS=[{"path": "assets/images/products/fruits/fresh-red-apples.jpg", "q": "red apples", "size": "medium"}, {"path": "assets/images/products/fruits/organic-bananas.jpg", "q": "bananas", "size": "medium"}, {"path": "assets/images/products/fruits/black-grapes.jpg", "q": "black grapes", "size": "medium"}, {"path": "assets/images/products/fruits/nagpur-oranges.jpg", "q": "oranges fruit", "size": "medium"}, {"path": "assets/images/products/fruits/pomegranate.jpg", "q": "Pomegranate pomegranate", "size": "medium"}, {"path": "assets/images/products/vegetables/fresh-tomatoes.jpg", "q": "Fresh Tomatoes tomato", "size": "medium"}, {"path": "assets/images/products/vegetables/green-capsicum.jpg", "q": "green bell pepper", "size": "medium"}, {"path": "assets/images/products/vegetables/red-onions.jpg", "q": "red onions", "size": "medium"}, {"path": "assets/images/products/vegetables/fresh-potatoes.jpg", "q": "Fresh Potatoes potato", "size": "medium"}, {"path": "assets/images/products/vegetables/fresh-carrots.jpg", "q": "Fresh Carrots carrot", "size": "medium"}, {"path": "assets/images/products/vegetables/fresh-spinach.jpg", "q": "Fresh Spinach spinach", "size": "medium"}, {"path": "assets/images/products/vegetables/fresh-broccoli.jpg", "q": "Fresh Broccoli broccoli", "size": "medium"}, {"path": "assets/images/products/dairy/farm-fresh-milk.jpg", "q": "milk bottle glass", "size": "medium"}, {"path": "assets/images/products/dairy/amul-butter.jpg", "q": "butter block", "size": "medium"}, {"path": "assets/images/products/dairy/fresh-paneer.jpg", "q": "paneer cubes indian cheese", "size": "medium"}, {"path": "assets/images/products/dairy/set-curd.jpg", "q": "curd yogurt bowl", "size": "medium"}, {"path": "assets/images/products/dairy/white-eggs.jpg", "q": "white eggs carton", "size": "medium"}, {"path": "assets/images/products/dairy/cheese-slices.jpg", "q": "cheese slices", "size": "medium"}, {"path": "assets/images/products/bakery/brown-bread.jpg", "q": "brown bread loaf", "size": "medium"}, {"path": "assets/images/products/bakery/butter-croissants.jpg", "q": "croissants", "size": "medium"}, {"path": "assets/images/products/groceries/basmati-rice.jpg", "q": "basmati rice", "size": "medium"}, {"path": "assets/images/products/groceries/toor-dal.jpg", "q": "toor dal pigeon peas lentils", "size": "medium"}, {"path": "assets/images/products/groceries/moong-dal.jpg", "q": "moong dal green gram lentils", "size": "medium"}, {"path": "assets/images/products/groceries/chana-dal.jpg", "q": "chana dal split chickpeas", "size": "medium"}, {"path": "assets/images/products/groceries/whole-wheat-atta.jpg", "q": "whole wheat flour bowl", "size": "medium"}, {"path": "assets/images/products/groceries/rolled-oats.jpg", "q": "rolled oats bowl", "size": "medium"}, {"path": "assets/images/products/groceries/sunflower-oil.jpg", "q": "sunflower oil bottle", "size": "medium"}, {"path": "assets/images/products/groceries/pure-desi-ghee.jpg", "q": "ghee clarified butter jar", "size": "medium"}, {"path": "assets/images/products/groceries/olive-oil.jpg", "q": "olive oil bottle", "size": "medium"}, {"path": "assets/images/products/snacks/potato-chips.jpg", "q": "potato chips bowl", "size": "medium"}, {"path": "assets/images/products/snacks/chocolate-cookies.jpg", "q": "chocolate cookies", "size": "medium"}, {"path": "assets/images/products/snacks/roasted-almonds.jpg", "q": "almonds", "size": "medium"}, {"path": "assets/images/products/beverages/orange-juice.jpg", "q": "orange juice glass", "size": "medium"}, {"path": "assets/images/products/beverages/assam-tea.jpg", "q": "black tea leaves cup", "size": "medium"}, {"path": "assets/images/products/beverages/instant-coffee.jpg", "q": "coffee powder jar", "size": "medium"}, {"path": "assets/images/products/groceries/garam-masala.jpg", "q": "garam masala spice mix", "size": "medium"}, {"path": "assets/images/products/groceries/turmeric-powder.jpg", "q": "turmeric powder", "size": "medium"}, {"path": "assets/images/products/groceries/red-chilli-powder.jpg", "q": "red chilli powder", "size": "medium"}, {"path": "assets/images/products/groceries/frozen-green-peas.jpg", "q": "green peas", "size": "medium"}, {"path": "assets/images/products/snacks/vanilla-ice-cream.jpg", "q": "vanilla ice cream scoop", "size": "medium"}, {"path": "assets/images/products/groceries/sandal-soap.jpg", "q": "soap bars", "size": "medium"}, {"path": "assets/images/products/groceries/herbal-shampoo.jpg", "q": "shampoo bottle", "size": "medium"}, {"path": "assets/images/products/groceries/toothpaste.jpg", "q": "toothpaste toothbrush", "size": "medium"}, {"path": "assets/images/products/groceries/dishwash-liquid.jpg", "q": "dish soap sponge", "size": "medium"}, {"path": "assets/images/products/groceries/laundry-detergent.jpg", "q": "laundry detergent", "size": "medium"}, {"path": "assets/images/categories/fruits-veg.jpg", "q": "fresh fruits and vegetables", "size": "medium"}, {"path": "assets/images/categories/dairy-bakery.jpg", "q": "milk cheese bread", "size": "medium"}, {"path": "assets/images/categories/rice-pulses.jpg", "q": "rice and lentils", "size": "medium"}, {"path": "assets/images/categories/atta-grains.jpg", "q": "wheat grains flour", "size": "medium"}, {"path": "assets/images/categories/snacks-bev.jpg", "q": "snacks and drinks", "size": "medium"}, {"path": "assets/images/categories/spices.jpg", "q": "indian spices", "size": "medium"}, {"path": "assets/images/categories/oil-ghee.jpg", "q": "cooking oil ghee", "size": "medium"}, {"path": "assets/images/categories/personal-care.jpg", "q": "personal care products", "size": "medium"}, {"path": "assets/images/categories/household.jpg", "q": "cleaning supplies", "size": "medium"}, {"path": "assets/images/categories/frozen.jpg", "q": "frozen food", "size": "medium"}, {"path": "assets/images/banners/hero-grocery.jpg", "q": "fresh vegetables basket groceries", "size": "large"}, {"path": "assets/images/banners/weekend-saver.jpg", "q": "fresh vegetables market", "size": "large"}, {"path": "assets/images/banners/fast-delivery.jpg", "q": "grocery delivery bag", "size": "large"}];
+const $=id=>document.getElementById(id),log=m=>{$('log').textContent+=m+'\n';$('log').scrollTop=1e9};
+const sleep=ms=>new Promise(r=>setTimeout(r,ms));
+$('go').onclick=async()=>{
+  const key=$('key').value.trim(); if(!key) return alert('API key taka');
+  $('go').disabled=true; $('bar').max=ITEMS.length; $('bar').value=0; $('log').textContent='';
+  const zip=new JSZip(),used=new Set(),failed=[];let ok=0;
+  for(const it of ITEMS){
+    let done=false;
+    for(let a=0;a<3&&!done;a++){
+      try{
+        const r=await fetch('https://api.pexels.com/v1/search?'+new URLSearchParams({query:it.q,per_page:20,orientation:'landscape'}),{headers:{Authorization:key}});
+        if(r.status===401||r.status===403){log('API key chukichi ahe (HTTP '+r.status+')');$('go').disabled=false;return}
+        if(!r.ok) throw new Error('HTTP '+r.status);
+        const photos=(await r.json()).photos, p=photos.find(x=>!used.has(x.id));
+        if(!p) throw new Error('no result');
+        const im=await fetch(p.src[it.size]); if(!im.ok) throw new Error('image HTTP '+im.status);
+        zip.file(it.path,await im.blob()); used.add(p.id); ok++; done=true; log('saved  '+it.path+'  <- '+it.q);
+      }catch(e){ if(a==2){failed.push(it.path);log('FAILED '+it.path+' ('+e.message+')')} else await sleep(1500*(a+1)); }
+    }
+    $('bar').value++; await sleep(300);
+  }
+  log('\nDone: '+ok+'/'+ITEMS.length+(failed.length?'  Failed: '+failed.length:''));
+  if(ok){const b=await zip.generateAsync({type:'blob'});const a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='freshmart-images.zip';a.click();log('freshmart-images.zip download zhala.')}
+  $('go').disabled=false;
+};
+</script></body></html>

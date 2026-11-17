@@ -1,0 +1,2 @@
+.opt{display:flex;gap:.6rem;align-items:center;border:1.5px solid #d9e5d3;border-radius:.75rem;padding:.7rem .9rem;cursor:pointer;transition:.2s}
+.opt:has(input:checked){border-color:var(--brand);background:var(--light)}

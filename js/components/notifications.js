@@ -1,0 +1,2 @@
+function toast(m,type='ok'){let c=$('#toasts');if(!c){c=document.createElement('div');c.id='toasts';c.className='fixed bottom-5 right-5 z-[60] space-y-2';document.body.append(c)}
+const t=document.createElement('div');t.setAttribute('role','status');t.className='px-4 py-3 rounded-xl text-sm font-semibold text-white shadow-lg transition '+(type==='err'?'bg-red-600':'bg-brand-dark');t.textContent=m;c.append(t);setTimeout(()=>{t.style.opacity=0;setTimeout(()=>t.remove(),300)},2400)}

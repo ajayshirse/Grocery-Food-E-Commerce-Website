@@ -1,0 +1,2 @@
+const CATEGORIES=[['fruits-veg','Fruits & Vegetables','fruits'],['dairy-bakery','Dairy & Bakery','dairy'],['rice-pulses','Rice, Dal & Pulses','lentils'],['atta-grains','Atta & Grains','flour'],['snacks-bev','Snacks & Beverages','snacks'],['spices','Spices & Masala','spices'],['oil-ghee','Oil & Ghee','cooking'],['personal-care','Personal Care','skincare'],['household','Household Essentials','cleaning'],['frozen','Frozen Food','frozen']].map(([id,name,kw])=>({id,name,kw}));
+const CAT=id=>CATEGORIES.find(c=>c.id===id);

@@ -1,0 +1,3 @@
+.pd-tab{padding:.6rem 1rem;border-bottom:2px solid transparent;font-weight:700;cursor:pointer}
+.pd-tab.on{border-color:var(--brand);color:var(--brand)}
+.zoom img{transition:transform .5s}.zoom:hover img{transform:scale(1.06)}

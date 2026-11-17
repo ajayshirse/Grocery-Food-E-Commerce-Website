@@ -1,0 +1,4 @@
+const A=$('#app'),u=user();
+let o=orders().find(x=>x.id===qs.get('id'))||orders().find(x=>!u||x.email===u.email);
+let demo=false;if(!o){demo=true;const L=PRODUCTS.slice(0,3).map(p=>({id:p.id,name:p.name,unit:p.unit,price:p.price,q:1}));o={id:'FM-DEMO-1001',t:Date.now()-50000,email:'demo@freshmart.in',items:L,addr:{name:'Demo Customer',mobile:'9876543210',line:'123 Green Street',city:'Pune',state:'Maharashtra',pin:'411001'},date:new Date().toISOString().slice(0,10),slot:'4 PM – 8 PM',pay:'Cash on Delivery',totals:totals(L.map(i=>({p:P(i.id),q:1})))}}
+A.innerHTML=`<h1 class="text-2xl font-extrabold mt-5 mb-1">Order Tracking</h1>${demo?'<p class="text-sm text-gray-500 mb-4">You have no orders yet, so here is a demo order. <a class="text-brand font-semibold" href="products.html">Place a real one</a>.</p>':'<p class="mb-4"></p>'}${orderDetail(o)}`;liveTrack(o);

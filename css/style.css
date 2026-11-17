@@ -1,0 +1,16 @@
+@import url('https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700;800&display=swap');
+:root{--brand:#2f7a1f;--dark:#1f4d16;--light:#eaf5e3;--accent:#f59e0b}
+html{scroll-behavior:smooth}
+body{font-family:'Plus Jakarta Sans',system-ui,sans-serif;background:#fbf9f2;color:#1f2a1c}
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.4rem;padding:.65rem 1.3rem;border-radius:.6rem;font-weight:700;font-size:.85rem;transition:.2s;cursor:pointer}
+.btn-p{background:var(--brand);color:#fff}.btn-p:hover{background:var(--dark)}
+.btn-o{background:#fff;color:var(--brand);border:1.5px solid var(--brand)}.btn-o:hover{background:var(--light)}
+.btn-s{padding:.4rem .8rem;font-size:.75rem}
+.inp{width:100%;padding:.6rem .85rem;border:1px solid #d9e5d3;border-radius:.6rem;background:#fff;outline:none;font-size:.9rem}
+.inp:focus{border-color:var(--brand);box-shadow:0 0 0 3px #cfe8c3}
+.card{background:#fff;border:1px solid #e3efdc;border-radius:1rem;padding:1.25rem}
+.chip{padding:.3rem .8rem;border-radius:999px;border:1px solid #d9e5d3;background:#fff;font-size:.8rem;font-weight:600;cursor:pointer}
+.chip.on{background:var(--brand);color:#fff;border-color:var(--brand)}
+.no-sb::-webkit-scrollbar{display:none}
+:focus-visible{outline:2px solid var(--brand);outline-offset:2px}
+@media(prefers-reduced-motion:reduce){*{transition:none!important;scroll-behavior:auto!important}}
