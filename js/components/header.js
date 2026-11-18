@@ -1,15 +1,49 @@
-(function(){const u=user(),here=location.pathname.split('/').pop()||'index.html',cur=here+location.search;
-const NAV=[['index.html','Home'],['products.html','Shop'],['index.html#categories','Categories'],['products.html?offers=1','Offers'],['products.html?sort=pop','Best Sellers'],['contact.html','Contact Us']];
-const on=h=>h===cur?'text-brand border-brand':'border-transparent hover:text-brand';
-const soc=['f','in','X'].map(s=>`<a href="#" data-info="Social media" class="w-6 h-6 rounded-full bg-brand-light text-brand grid place-items-center font-bold text-[10px]">${s}</a>`).join('');
-$('#site-header').innerHTML=`<div class="topbar bg-white border-b text-xs text-gray-600"><div class="max-w-[1280px] mx-auto px-4 py-2 flex justify-between items-center gap-4"><span class="flex items-center gap-1.5">${ico('pin','w-4 h-4 text-brand')}123 Green Street, Pune, Maharashtra 411001</span><span class="flex items-center gap-1.5">${ico('truck','w-4 h-4 text-brand')}Free Delivery on orders over ₹499</span><span class="flex items-center gap-1.5">${ico('phone','w-4 h-4 text-brand')}+91 98765 43210</span><span class="flex items-center gap-1.5">${ico('clock','w-4 h-4 text-brand')}Mon - Sun: 8:00 AM - 10:00 PM</span><span class="flex gap-2">${soc}</span></div></div>
-<header class="bg-white sticky top-0 z-40 shadow-sm"><div class="max-w-[1280px] mx-auto px-4 py-3 flex items-center gap-3 lg:gap-5"><a href="index.html" class="flex items-center gap-2 shrink-0"><span class="w-10 h-10 rounded-xl bg-brand text-white grid place-items-center">${ico('leaf')}</span><span class="leading-tight"><b class="text-xl text-brand-dark block">FreshMart</b><span class="text-[10px] text-gray-500 hidden sm:block">Fresh. Quality. Everyday.</span></span></a>
-<select id="loc" aria-label="Delivery location" class="hidden xl:block inp !w-auto text-sm"><option>Deliver to: Pune 411001</option><option>Deliver to: Mumbai 400001</option><option>Deliver to: Delhi 110001</option><option>Deliver to: Bengaluru 560001</option></select>
-<form id="sf" class="flex-1 flex max-w-3xl border border-green-200 rounded-xl overflow-hidden bg-white"><input id="sq" class="flex-1 min-w-0 px-3 py-3 text-sm outline-none" placeholder="Search for products, categories..." aria-label="Search"><select id="sc" aria-label="Category" class="hidden md:block border-l px-3 text-sm bg-white"><option value="">All Categories</option>${CATEGORIES.map(c=>`<option value="${c.id}">${c.name}</option>`).join('')}</select><button class="bg-brand text-white px-5" aria-label="Search">${ico('search')}</button></form>
-<a href="cart.html" class="flex items-center gap-2 shrink-0 text-xs" aria-label="Cart"><span class="relative">${ico('cart','w-7 h-7')}<b id="cc" class="absolute -top-2 -right-2 bg-brand text-white text-[10px] rounded-full min-w-4 text-center px-1"></b></span><span class="hidden md:block leading-tight text-gray-500">My Cart<b id="ct" class="block text-sm text-gray-900"></b></span></a>
-<a href="${u?'my-account.html':'login.html'}" class="flex items-center gap-2 text-xs shrink-0">${ico('user','w-7 h-7')}<span class="hidden md:block leading-tight text-gray-500">${u?'Hello, '+u.name.split(' ')[0]:'Sign In / Register'}<b class="block text-sm text-gray-900">My Account</b></span></a></div>
-<div class="border-t"><div class="max-w-[1280px] mx-auto px-4 flex items-center gap-5 text-sm font-semibold"><details class="relative shrink-0"><summary class="list-none cursor-pointer bg-brand text-white rounded-lg px-4 py-2 my-1.5 flex items-center gap-2">${ico('menu','w-4 h-4')}<span class="hidden sm:inline">Shop by</span> Categories</summary><div class="absolute left-0 top-full bg-white shadow-xl rounded-xl p-2 w-60 z-50 border">${CATEGORIES.map(c=>`<a href="products.html?cat=${c.id}" class="block px-3 py-2 rounded-lg hover:bg-brand-light">${c.name}</a>`).join('')}</div></details><nav class="flex gap-5 overflow-x-auto no-sb whitespace-nowrap">${NAV.map(n=>`<a href="${n[0]}" class="py-3 border-b-2 ${on(n[0])}">${n[1]}</a>`).join('')}</nav><a href="products.html?offers=1" class="ml-auto hidden md:flex items-center gap-1.5 bg-brand-light text-brand rounded-lg px-3 py-1.5 text-xs shrink-0">${ico('tag','w-4 h-4')}FLASH DEALS</a></div></div></header>`;
-$('#sq').value=qs.get('q')||'';$('#sc').value=qs.get('cat')&&CAT(qs.get('cat'))?qs.get('cat'):'';
-$('#sf').onsubmit=e=>{e.preventDefault();const c=$('#sc').value;location.href='products.html?q='+encodeURIComponent($('#sq').value)+(c?'&cat='+c:'')};
-$('#loc').value=get('loc','Deliver to: Pune 411001');$('#loc').onchange=e=>{set('loc',e.target.value);toast('Delivery location updated')};
-badges()})();
+(function () {
+  const u = user(), here = location.pathname.split('/').pop() || 'index.html', cur = here + location.search + location.hash;
+  // [link, label, extra]  (extra: 'dd' = shows a small chevron, 'info' = demo dialog because the page does not exist yet)
+  const NAV = [
+    ['index.html', 'Home'],
+    ['products.html', 'Categories', 'dd'],
+    ['products.html?offers=1', 'Deals'],
+    ['products.html?sort=new', 'New Arrivals'],
+    ['contact.html#about', 'About Us'],
+    ['contact.html', 'Contact Us']
+  ];
+  const isOn = h => h === cur || (h === 'index.html' && here === 'index.html' && !location.hash) || (h === 'products.html?offers=1' && cur === h);
+  const soc = [['fb', 'Facebook'], ['ig', 'Instagram'], ['tw', 'Twitter'], ['pt', 'Pinterest']]
+    .map(s => `<a href="#" data-info="${s[1]}" aria-label="${s[1]}">${ico(s[0], '')}</a>`).join('');
+  const logo = `<svg viewBox="0 0 48 48" fill="none" stroke="#3f8a2c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6l5 24h22l4-17H11"/><circle cx="19" cy="41" r="2.6" fill="#3f8a2c"/><circle cx="33" cy="41" r="2.6" fill="#3f8a2c"/><path d="M24 15c-4-1-6-5-5-9 4 0 6 3 5 9zM25 15c3-1 6-4 5-8-4 0-6 3-5 8zM24.5 15c3-2 8-2 10 0"/></svg>`;
+
+  $('#site-header').innerHTML = `
+<div class="topbar"><div class="fm-wrap fm-top">
+  <span>${ico('pin', '')}123 Green Street, Pune, Maharashtra 411001</span>
+  <span>${ico('truck', '')}Free Delivery on orders over ₹499</span>
+  <span>${ico('phone', '')}+91 98765 43210</span>
+  <span>${ico('clock', '')}Mon - Sun: 8:00 AM - 10:00 PM</span>
+  <span class="fm-soc">${soc}</span>
+</div></div>
+<header class="fm-header">
+  <div class="fm-wrap fm-main">
+    <a href="index.html" class="fm-logo" aria-label="FreshMart home">${logo}<span><b>FreshMart</b><small>Fresh. Quality. Everyday.</small></span></a>
+    <form id="sf" class="fm-search" role="search">
+      <input id="sq" placeholder="Search for products, categories..." aria-label="Search">
+      <select id="sc" aria-label="Category"><option value="">All Categories</option>${CATEGORIES.map(c => `<option value="${c.id}">${c.name}</option>`).join('')}</select>
+      <button aria-label="Search">${ico('search', '')}</button>
+    </form>
+    <a href="${u ? 'my-account.html' : 'login.html'}" class="fm-act fm-acct">${ico('user', '')}<span>${u ? 'Hello, ' + u.name.split(' ')[0] : 'Sign In / Register'}<b>My Account</b></span></a>
+    <a href="${u ? 'my-account.html#wishlist' : 'login.html'}" class="fm-act fm-wish" aria-label="Wishlist"><span class="fm-ico">${ico('heart', '')}<i id="wc" class="fm-badge">0</i></span></a>
+    <a href="cart.html" class="fm-act" aria-label="Cart"><span class="fm-ico">${ico('cart', '')}<i id="cc" class="fm-badge">0</i></span><span>My Cart<b id="ct">₹0</b></span></a>
+  </div>
+  <div class="fm-nav"><div class="fm-wrap">
+    <nav class="fm-links" aria-label="Main">${NAV.map(n => n[2] === 'dd'
+      ? `<div class="fm-dd"><a href="${n[0]}" class="${here === 'products.html' && qs.get('cat') ? 'on' : ''}" aria-haspopup="true">${n[1]}${ico('down', '')}</a><div class="fm-ddm">${CATEGORIES.map(c => `<a href="products.html?cat=${c.id}">${c.name}</a>`).join('')}</div></div>`
+      : `<a href="${n[0]}" ${n[2] === 'info' ? 'data-info="' + n[1] + '"' : ''} class="${isOn(n[0]) ? 'on' : ''}">${n[1]}</a>`).join('')}</nav>
+    <a href="products.html?offers=1" class="fm-flash">${ico('bolt', '')}FLASH DEALS</a>
+  </div></div>
+</header>`;
+
+  $('#sq').value = qs.get('q') || '';
+  $('#sc').value = qs.get('cat') && CAT(qs.get('cat')) ? qs.get('cat') : '';
+  $('#sf').onsubmit = e => { e.preventDefault(); const c = $('#sc').value; location.href = 'products.html?q=' + encodeURIComponent($('#sq').value) + (c ? '&cat=' + c : '') };
+  badges();
+})();

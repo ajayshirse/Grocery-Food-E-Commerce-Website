@@ -1,2 +1,7 @@
 .filter-box summary{cursor:pointer;font-weight:700;list-style:none}
 .filter-box label{display:flex;gap:.5rem;align-items:center;font-size:.85rem;padding:.2rem 0;cursor:pointer}
+.filter-box summary{display:flex;align-items:center;justify-content:space-between;font-size:.9rem}
+.filter-box summary::-webkit-details-marker{display:none}
+.filter-box summary::after{content:"";width:8px;height:8px;border-right:2px solid #5f6d5a;border-bottom:2px solid #5f6d5a;transform:rotate(45deg) translateY(-2px);transition:.2s}
+.filter-box[open] summary::after{transform:rotate(-135deg) translateY(-2px)}
+.filter-box[open] summary{color:var(--brand)}

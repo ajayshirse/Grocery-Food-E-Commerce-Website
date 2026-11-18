@@ -1,7 +1,20 @@
-(function(){const I=t=>`<a href="#" data-info="${t}" class="block hover:text-white">${t}</a>`,L=(h,t)=>`<a href="${h}" class="block hover:text-white">${t}</a>`;
-$('#site-footer').innerHTML=`<footer class="mt-12 bg-[#1b4513] text-green-100 text-sm"><div class="max-w-[1280px] mx-auto px-4 py-10 grid sm:grid-cols-2 lg:grid-cols-5 gap-8"><div><p class="flex items-center gap-2 text-white font-extrabold text-xl"><span class="w-9 h-9 rounded-lg bg-brand grid place-items-center">${ico('leaf')}</span>FreshMart</p><p class="mt-3">Your one-stop shop for fresh groceries and household essentials. Quality products, trusted by thousands.</p><div class="flex gap-2 mt-4">${['f','in','X'].map(s=>`<a href="#" data-info="Social media" class="w-8 h-8 rounded-full bg-white/10 grid place-items-center font-bold text-white">${s}</a>`).join('')}</div></div>
-<div class="space-y-2"><p class="font-bold text-white">Quick Links</p>${L('index.html','Home')}${L('contact.html#about','About Us')}${L('products.html','Shop')}${L('products.html?offers=1','Offers')}${L('contact.html','Contact Us')}${L('contact.html#faq','FAQs')}</div>
-<div class="space-y-2"><p class="font-bold text-white">Customer Service</p>${L('my-account.html','My Account')}${L('order-tracking.html','Order Tracking')}${L('my-account.html#wishlist','Wishlist')}${I('Return & Refund Policy')}${I('Privacy Policy')}${I('Terms & Conditions')}${L('contact.html','Customer Support')}</div>
-<div class="space-y-2"><p class="font-bold text-white">Categories</p>${CATEGORIES.slice(0,6).map(c=>L('products.html?cat='+c.id,c.name)).join('')}</div>
-<div class="space-y-2"><p class="font-bold text-white">We Accept</p><div class="flex flex-wrap gap-2">${['VISA','Mastercard','UPI','RuPay','COD'].map(x=>`<span class="bg-white text-gray-800 text-[11px] font-bold rounded-md px-2.5 py-1.5">${x}</span>`).join('')}</div><p class="pt-2">support@freshmart.in<br>+91 98765 43210</p></div></div><p class="border-t border-white/10 text-center text-xs py-4">© 2026 FreshMart. All Rights Reserved. Demo project.</p></footer><dialog id="dlg" class="rounded-2xl p-6 max-w-md backdrop:bg-black/40"><h3 id="dt" class="font-bold text-lg"></h3><p class="mt-2 text-sm text-gray-600">This section is a demo. The store would publish the full content here.</p><form method="dialog"><button class="btn btn-p btn-s mt-4">Close</button></form></dialog>`;
-document.addEventListener('click',e=>{const t=e.target.closest('[data-info]');if(!t)return;e.preventDefault();$('#dt').textContent=t.dataset.info;$('#dlg').showModal()})})();
+(function () {
+  const I = t => `<li><a href="#" data-info="${t}">${t}</a></li>`, L = (h, t) => `<li><a href="${h}">${t}</a></li>`;
+  const logo = `<svg viewBox="0 0 48 48" fill="none" stroke="#fff" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h6l5 24h22l4-17H11"/><circle cx="19" cy="41" r="2.6" fill="#fff"/><circle cx="33" cy="41" r="2.6" fill="#fff"/><path d="M24 15c-4-1-6-5-5-9 4 0 6 3 5 9zM25 15c3-1 6-4 5-8-4 0-6 3-5 8zM24.5 15c3-2 8-2 10 0"/></svg>`;
+  const soc = [['fb', 'Facebook'], ['ig', 'Instagram'], ['tw', 'Twitter'], ['pt', 'Pinterest']]
+    .map(s => `<a href="#" data-info="${s[1]}" aria-label="${s[1]}">${ico(s[0], '')}</a>`).join('');
+  $('#site-footer').innerHTML = `<footer class="fm-footer">
+  <div class="fm-wrap fm-foot">
+    <div><div class="brand">${logo}<span>FreshMart<small>Fresh. Quality. Everyday.</small></span></div>
+      <div class="soc">${soc}</div><p class="cp">© 2026 FreshMart. All Rights Reserved. Demo project.</p></div>
+    <div><h4>Categories</h4><ul class="fm-ql fm-cat2">${CATEGORIES.slice(0, 8).map(c => L('products.html?cat=' + c.id, c.name)).join('')}</ul></div>
+    <div><h4>Contact Us</h4><ul class="fm-ct">
+      <li>${ico('pin', '')}<span>123 Green Street, Pune, Maharashtra 411001</span></li>
+      <li>${ico('phone', '')}<span>+91 98765 43210</span></li>
+      <li>${ico('mail2', '')}<span>support@freshmart.in</span></li></ul></div>
+    <div><h4>Quick Links</h4><ul class="fm-ql">${L('index.html', 'Home')}${L('products.html', 'Shop')}${L('products.html?offers=1', 'Deals')}${L('contact.html#about', 'About Us')}${L('contact.html#faq', 'FAQs')}${L('my-account.html', 'My Account')}${L('order-tracking.html', 'Order Tracking')}${L('my-account.html#wishlist', 'Wishlist')}${I('Returns & Refunds')}${I('Shipping Policy')}${I('Privacy Policy')}${I('Terms & Conditions')}</ul></div>
+  </div>
+</footer>
+<dialog id="dlg" class="rounded-2xl p-6 max-w-md backdrop:bg-black/40"><h3 id="dt" class="font-bold text-lg"></h3><p class="mt-2 text-sm text-gray-600">This section is a demo. The store would publish the full content here.</p><form method="dialog"><button class="btn btn-p btn-s mt-4">Close</button></form></dialog>`;
+  document.addEventListener('click', e => { const t = e.target.closest('[data-info]'); if (!t) return; e.preventDefault(); $('#dt').textContent = t.dataset.info; $('#dlg').showModal() });
+})();

@@ -1,16 +1,90 @@
 const A = $('#app');
-const sec = (t, list, link) => `<section class="mt-8"><div class="flex justify-between items-center mb-3"><h2 class="text-xl font-extrabold">${t}</h2><a href="${link}" class="text-sm font-semibold text-brand">View All →</a></div><div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">${list.map(card).join('')}</div></section>`;
-function rerender() {
-    const by = f => [...PRODUCTS].sort(f), best = by((a, b) => b.pop - a.pop).slice(0, 5), deals = by((a, b) => off(b) - off(a)).slice(0, 5), rec = by((a, b) => b.rating - a.rating || b.pop - a.pop).filter(p => !best.includes(p)).slice(0, 5);
-    A.innerHTML = `<section class="hero rounded-3xl overflow-hidden grid md:grid-cols-2 items-center mt-4 border border-green-100"><div class="p-6 md:p-10"><p class="text-brand font-bold text-xs tracking-widest">FRESHNESS YOU CAN TRUST</p><h1 class="text-4xl md:text-5xl font-extrabold leading-tight mt-2">Fresh Groceries <span class="text-brand">Delivered to Your Doorstep</span></h1><p class="mt-3 text-gray-600 max-w-md">Get the freshest fruits, vegetables and daily essentials delivered to your home. Use code <b>FRESH20</b> for 20% off your first order.</p><div class="mt-5 flex flex-wrap gap-3"><a href="products.html" class="btn btn-p">SHOP NOW →</a><a href="#categories" class="btn btn-o">EXPLORE CATEGORIES</a></div><div class="mt-6 grid grid-cols-2 sm:grid-cols-4 gap-3 text-xs">${[['leaf', 'Farm Fresh', 'Quality produce'], ['truck', 'Free Delivery', 'On orders over ₹499'], ['shield', 'Secure Payment', '100% protected'], ['refresh', 'Easy Returns', '7 days return']].map(f => `<div class="flex items-center gap-2 text-brand">${ico(f[0], 'w-7 h-7 shrink-0')}<span class="text-gray-700"><b class="block">${f[1]}</b>${f[2]}</span></div>`).join('')}</div></div><div class="relative h-64 md:h-[26rem]">${img('https://thumbs.dreamstime.com/z/full-grocery-cart-packed-fresh-produce-healthy-foods-white-background-vibrant-shopping-overflows-abundance-402134037.jpg?ct=jpeg', 'vegetables', 'Fresh groceries basket', 'w-full h-full object-cover', 900, 700)}<div class="absolute top-4 left-4 w-24 h-24 rounded-full bg-brand text-white grid place-items-center text-center text-[11px] font-bold leading-tight shadow-lg"><span>UP TO<br><b class="text-2xl">30%</b><br>OFF</span></div></div></section>
-<section id="categories" class="card mt-6 scroll-mt-32"><h2 class="text-center font-extrabold uppercase tracking-wide text-sm mb-4">Shop by Category</h2><div class="flex gap-4 overflow-x-auto no-sb snap pb-2">${CATEGORIES.map(c => `<a href="products.html?cat=${c.id}" class="cat-card shrink-0 w-28 text-center"><div class="w-28 h-24 rounded-xl overflow-hidden border border-green-100">${cimg(c)}</div><p class="mt-2 text-xs font-bold leading-tight">${c.name}</p></a>`).join('')}</div></section>
-<section class="mt-6 grid lg:grid-cols-3 gap-4"><div class="lg:col-span-2 rounded-2xl bg-brand-dark text-white overflow-hidden grid sm:grid-cols-2"><div class="p-6 self-center"><p class="text-accent text-xs font-bold tracking-widest">LIMITED TIME OFFER</p><h3 class="text-3xl font-extrabold mt-1">Weekend <span class="text-green-300">Super Saver</span></h3><p class="text-sm text-green-100 mt-2">Enjoy up to 30% off on selected products. Offer valid till Sunday.</p><a href="products.html?offers=1" class="btn bg-brand text-white mt-4">SHOP NOW</a></div><div class="h-44 sm:h-auto relative">${img('assets/images/banners/weekend-saver.jpg', 'vegetables,market', 'Weekend super saver vegetables', 'w-full h-full object-cover', 700, 500)}<span class="absolute top-3 left-3 w-16 h-16 rounded-full bg-accent text-brand-dark grid place-items-center text-[10px] font-extrabold text-center leading-tight">UP TO<br>30%<br>OFF</span></div></div><div class="rounded-2xl bg-brand-light overflow-hidden grid grid-cols-2"><div class="p-5 self-center"><h3 class="text-xl font-extrabold">Get Delivery in <span class="text-brand">30 Minutes!</span></h3><p class="text-xs text-gray-600 mt-1">Fast delivery at your doorstep</p><a href="products.html" class="btn btn-p btn-s mt-3">ORDER NOW</a></div><div class="h-full min-h-[10rem]">${img('assets/images/banners/fast-delivery.jpg', 'delivery', 'Fast grocery delivery', 'w-full h-full object-cover', 400, 400)}</div></div></section>
-${sec('Best Selling Products', best, 'products.html?sort=pop')}${sec("Today's Special Offers", deals, 'products.html?offers=1')}${sec('Recommended Products', rec, 'products.html?sort=rating')}
-<section class="card mt-8"><h2 class="text-center font-extrabold uppercase tracking-wide text-sm mb-5">Why Choose FreshMart?</h2><div class="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">${[['leaf', 'Fresh Products', 'Sourced daily from trusted farms and suppliers.'], ['truck', 'Fast Delivery', 'Lightning fast delivery right at your doorstep.'], ['shield', 'Secure Shopping', 'Your payments and data are always safe with us.'], ['check', 'Quality Guarantee', 'Not satisfied? Easy returns within 7 days.']].map(w => `<div class="flex gap-3"><span class="w-12 h-12 shrink-0 rounded-full bg-brand-light text-brand grid place-items-center">${ico(w[0])}</span><div><b>${w[1]}</b><p class="text-xs text-gray-500">${w[2]}</p></div></div>`).join('')}</div></section>
-<section class="card mt-6 grid lg:grid-cols-3 gap-6"><div class="lg:col-span-2"><h2 class="font-extrabold uppercase tracking-wide text-sm mb-4">What Our Customers Say</h2><div class="grid md:grid-cols-3 gap-4">${[['Sarah J.', 'FreshMart has made grocery shopping so easy. The quality is always top-notch and delivery is super fast!'], ['Rohit K.', 'Vegetables are always fresh and prices are better than my local store. Highly recommended.'], ['Anita M.', 'Easy ordering, on-time delivery and great packaging. My go-to app for monthly groceries.']].map(t => `<div class="rounded-xl bg-cream p-4 text-sm"><div class="text-amber-500 flex">${ico('star', 'w-4 h-4 fill-current').repeat(5)}</div><p class="mt-2 text-gray-600">"${t[1]}"</p><p class="mt-2 font-bold flex items-center gap-2"><span class="w-7 h-7 rounded-full bg-brand text-white grid place-items-center text-xs">${t[0][0]}</span>${t[0]}</p></div>`).join('')}</div></div><div><h2 class="font-extrabold uppercase tracking-wide text-sm mb-2">Get Exclusive Offers</h2><p class="text-xs text-gray-500">Subscribe for the best offers and updates.</p><form id="nl" novalidate class="flex mt-3"><input id="nle" class="inp !rounded-r-none" placeholder="Enter your email" aria-label="Email"><button class="btn btn-p !rounded-l-none">SUBSCRIBE</button></form><p id="nlm" class="text-xs mt-2 min-h-4"></p></div></section>`;
-    const f = $('#nl'); f.onsubmit = e => {
-        e.preventDefault(); const v = $('#nle').value.trim(), m = $('#nlm'); if (!/^\S+@\S+\.\S+$/.test(v)) { m.className = 'text-xs mt-2 text-red-500'; m.textContent = 'Please enter a valid email address'; return toast('Invalid email', 'err') }
-        set('newsletter', [...new Set([...get('newsletter', []), v])]); m.className = 'text-xs mt-2 text-brand'; m.textContent = 'Thanks for subscribing!'; $('#nle').value = ''; toast('Subscribed successfully')
-    }
+
+// ---------- data for the page ----------
+const HERO_FEATS = [['leaf', 'Farm Fresh', 'Quality Produce'], ['truck', 'Free Delivery', 'On orders over ₹499'], ['card', 'Secure Payment', '100% Protected'], ['refresh', 'Easy Returns', '7 Days Return']];
+const WHY = [
+  ['award', 'Best Quality', 'We deliver only the freshest & finest products.'],
+  ['percent', 'Affordable Prices', 'Best prices & exclusive offers on all your favorite products.'],
+  ['truck', 'Fast Delivery', 'Lightning fast delivery at your doorstep on time.'],
+  ['lock', '100% Secure', 'Your payments and data are safe with us always.'],
+  ['refresh', 'Easy Returns', 'Not satisfied? Easy returns within 7 days of delivery.']
+];
+const SAY = [
+  ['Sarah J.', 'FreshMart has made grocery shopping so easy and convenient. The quality is always top-notch and delivery is super fast!'],
+  ['Rohit K.', 'Vegetables are always fresh and prices are better than my local store. Highly recommended.'],
+  ['Anita M.', 'Easy ordering, on-time delivery and great packaging. My go-to app for monthly groceries.']
+];
+const AVATARS = [['S', '#3f8a2c'], ['R', '#e07a1f'], ['A', '#2b6cb0'], ['P', '#9b2c6e']];
+
+// ---------- small builders ----------
+const stars5 = () => `<span class="hm-stars">${ico('star', '').repeat(5)}</span>`;
+const clock = `<svg class="clk" viewBox="0 0 84 94" aria-hidden="true"><rect x="31" y="2" width="22" height="9" rx="3" fill="#2f7a1f"/><path d="M42 11v8" stroke="#2f7a1f" stroke-width="4"/><path d="m68 23 6-6" stroke="#2f7a1f" stroke-width="5" stroke-linecap="round"/><circle cx="42" cy="55" r="33" fill="#fff" stroke="#2f7a1f" stroke-width="5"/><path d="M42 27v4M42 79v-4M14 55h4M70 55h-4" stroke="#8aa57e" stroke-width="2.5" stroke-linecap="round"/><path d="M42 55V37M42 55l12 8" stroke="#17241a" stroke-width="3.5" stroke-linecap="round"/><circle cx="42" cy="55" r="3.5" fill="#17241a"/></svg>`;
+
+const arrows = `<button class="hm-arrow l" aria-label="Previous" hidden>${ico('left', '')}</button><button class="hm-arrow" aria-label="Next">${ico('right', '')}</button>`;
+
+let sayIdx = 0;
+function drawSay() {
+  const t = SAY[sayIdx];
+  $('#say-body').innerHTML = `${stars5()}<q>${t[1]}</q><p class="nm">- ${t[0]}</p>`;
+  $('#say-dots').innerHTML = SAY.map((_, i) => `<i class="${i === sayIdx ? 'on' : ''}"></i>`).join('');
 }
-rerender();
+
+function carousel(sec) {
+  const tr = $('.hm-track', sec), r = $('.hm-arrow:not(.l)', sec), l = $('.hm-arrow.l', sec);
+  const upd = () => { l.hidden = tr.scrollLeft < 8; r.hidden = tr.scrollLeft + tr.clientWidth >= tr.scrollWidth - 8 };
+  r.onclick = () => tr.scrollBy({ left: tr.clientWidth * .8, behavior: 'smooth' });
+  l.onclick = () => tr.scrollBy({ left: -tr.clientWidth * .8, behavior: 'smooth' });
+  tr.addEventListener('scroll', upd, { passive: true }); window.addEventListener('resize', upd); upd();
+}
+
+// ---------- page ----------
+function renderHome() {
+  const deals = [...PRODUCTS].sort((a, b) => off(b) - off(a) || b.pop - a.pop).slice(0, 10);
+  A.innerHTML = `
+<section class="hm-hero"><div class="fm-wrap">
+  <div>
+    <p class="hm-eyebrow">Freshness you can trust</p>
+    <h1>Fresh Groceries, <span>Better Living</span></h1>
+    <p class="hm-lead">Get the freshest fruits, vegetables, and daily essentials delivered to your doorstep. Use code <b>FRESH20</b> for 20% off your first order.</p>
+    <div class="hm-cta"><a href="products.html" class="fm-btn fm-btn-p">Shop Now ${ico('arrow', '')}</a><a href="products.html?offers=1" class="fm-btn fm-btn-o">Explore Deals</a></div>
+    <div class="hm-feats">${HERO_FEATS.map(f => `<div class="hm-feat">${ico(f[0], '')}<span><b>${f[1]}</b>${f[2]}</span></div>`).join('')}</div>
+  </div>
+  <div class="hm-art"><div class="hm-vid"><video autoplay muted loop playsinline preload="auto" poster="assets/videos/hero-poster.jpg" aria-label="Fresh vegetables at the store"><source src="assets/videos/hero.mp4" type="video/mp4"></video></div><span class="hm-off"><span>UP TO<b>30%</b>OFF</span></span></div>
+</div></section>
+
+<div class="fm-wrap">
+<section class="hm-promos" style="margin-top:-40px;position:relative;z-index:2">
+  <div class="hm-saver"><div class="tx"><p class="tag">Limited time offer</p><h3>Weekend <span>Super Saver</span></h3><p>Enjoy up to 30% off on selected products. Hurry! Offer valid till Sunday.</p><a href="products.html?offers=1" class="fm-btn">Shop Now</a></div>
+    <div class="ph">${img('assets/images/banners/weekend-saver.jpg', 'vegetables,market', 'Weekend super saver vegetables', '', 700, 500)}<span class="bd"><span>UP TO<b>30%</b>OFF</span></span></div></div>
+  <div class="hm-fast"><div class="tx"><h3>Get Delivery in <span>30 Minutes!</span></h3><p>Fast delivery at your doorstep</p><a href="products.html" class="fm-btn fm-btn-p">Order Now</a></div>
+    <div class="ph">${clock}${img('assets/images/banners/fast-delivery.jpg', 'delivery', 'Fast grocery delivery', '', 400, 400)}</div></div>
+</section>
+
+<section id="deals" class="hm-sec" style="scroll-margin-top:150px"><div class="hm-head"><h2>Deal of the Day</h2><a href="products.html?offers=1">View All Deals ${ico('arrow', '')}</a></div>
+  <div class="hm-track deals">${deals.map(card).join('')}</div>${arrows}</section>
+
+<section class="hm-sec"><h2 class="hm-title">Why Choose FreshMart?</h2>
+  <div class="hm-why">${WHY.map(w => `<div><span class="ic">${ico(w[0], '')}</span><span><b>${w[1]}</b><p>${w[2]}</p></span></div>`).join('')}</div></section>
+
+<section class="hm-sec hm-trio">
+  <div><h2>What Our Customers Say</h2><div class="hm-say"><button class="ar" id="say-prev" aria-label="Previous review">${ico('left', '')}</button><div class="bd"><div id="say-body"></div><div class="hm-dots" id="say-dots"></div></div><button class="ar" id="say-next" aria-label="Next review">${ico('right', '')}</button></div></div>
+  <div class="hm-trust"><h2>Trusted by <em>50,000+ Happy Customers</em></h2>
+    <div class="row"><div class="hm-av">${AVATARS.map(a => `<span style="background:${a[1]}">${a[0]}</span>`).join('')}</div><div class="big"><b>50K+</b><small>Happy Customers</small></div></div>
+    <div class="rt">${stars5()}<b>4.8/5</b>Average Rating</div></div>
+  <div class="hm-news"><h2>Get Exclusive Offers</h2><p class="s">Subscribe to get the best offers &amp; updates.</p>
+    <form id="nl" novalidate><input id="nle" placeholder="Enter your email" aria-label="Email"><button>SUBSCRIBE</button></form><p id="nlm"></p><p class="pv">We respect your privacy. Unsubscribe anytime.</p></div>
+</section>
+</div>`;
+
+  document.querySelectorAll('#app .hm-sec').forEach(s => { if ($('.hm-track', s)) carousel(s) });
+  drawSay();
+  $('#say-prev').onclick = () => { sayIdx = (sayIdx + SAY.length - 1) % SAY.length; drawSay() };
+  $('#say-next').onclick = () => { sayIdx = (sayIdx + 1) % SAY.length; drawSay() };
+
+  $('#nl').onsubmit = e => {
+    e.preventDefault(); const v = $('#nle').value.trim(), m = $('#nlm');
+    if (!/^\S+@\S+\.\S+$/.test(v)) { m.style.color = '#dc2626'; m.textContent = 'Please enter a valid email address'; return toast('Invalid email', 'err') }
+    set('newsletter', [...new Set([...get('newsletter', []), v])]); m.style.color = 'var(--fm-green)'; m.textContent = 'Thanks for subscribing!'; $('#nle').value = ''; toast('Subscribed successfully')
+  };
+}
+renderHome();
